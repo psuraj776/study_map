@@ -2,11 +2,27 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
 import 'package:geojson_vi/geojson_vi.dart';
+import 'package:flutter_map_mbtiles/flutter_map_mbtiles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/providers/app_providers.dart';
+import 'features/auth/presentation/screens/login_screen.dart';
+import 'features/map/presentation/screens/map_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,9 +30,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MapScreen(),
+      home: Consumer(
+        builder: (context, ref, child) {
+          final deviceAuth = ref.watch(deviceAuthStateProvider);
+          
+          return deviceAuth.when(
+            data: (isValidDevice) => isValidDevice 
+                ? const MapScreen() 
+                : const LoginScreen(),
+            loading: () => const CircularProgressIndicator(),
+            error: (_, __) => const Text('Error loading auth state'),
+          );
+        },
+      ),
     );
   }
 }
@@ -92,10 +120,9 @@ class MapScreenState extends State<MapScreen> {
           initialZoom: 4,
         ),
         children: [
-          TileLayer(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: const ['a', 'b', 'c'],
-            userAgentPackageName: 'com.example.app',
+          MBTilesLayer(
+            mbtilesPath: 'assets/basemaps/india_basemap.mbtiles', // <-- your mbtiles file
+            // Optional: set other properties as needed
           ),
           PolygonLayer(polygons: polygons),
           PolylineLayer(polylines: polylines),

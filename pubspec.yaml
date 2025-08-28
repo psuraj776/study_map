@@ -16,6 +16,7 @@ dependencies:
   flutter_map: ^8.1.1
   flutter_map_tile_caching: ^10.1.1
   latlong2: ^0.9.0
+  flutter_map_mbtiles: ^1.0.4
 
   # GeoJSON parsing
   geojson_vi: ^2.0.0
@@ -23,6 +24,15 @@ dependencies:
 
   # Needed by FMTC for its ObjectBox backend
   objectbox_flutter_libs: any
+
+  in_app_purchase: ^3.1.11
+  shared_preferences: ^2.2.2
+
+  # Device & Auth
+  device_info_plus: ^9.1.1
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.15.3
+  cloud_firestore: ^4.13.6
 
 dev_dependencies:
   flutter_test:
@@ -33,5 +43,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/basemaps/
-    - assets/layers/
+    - assets/basemaps/india_basemap.mbtiles
+    - assets/layers/india_states.geojson
+    - assets/layers/india_rivers.geojson
