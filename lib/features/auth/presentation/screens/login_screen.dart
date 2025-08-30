@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/providers/auth_providers.dart';
-
-final layerVisibilityProvider = StateNotifierProvider<LayerVisibilityNotifier, Map<String, bool>>((ref) {
-  return LayerVisibilityNotifier();
-});
+import '../../../../core/providers/app_providers.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -38,25 +34,15 @@ class LoginScreen extends ConsumerWidget {
                 if (!isValidDevice)
                   ElevatedButton.icon(
                     onPressed: () {
-                      ref.read(deviceAuthStateProvider.notifier).login()
-                        .catchError((error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.toString())),
-                          );
-                        });
+                      // TODO: Implement device authorization
                     },
                     icon: const Icon(Icons.login),
                     label: const Text('Authorize This Device'),
                   ),
                 if (isValidDevice)
                   ElevatedButton.icon(
-                    onPressed: () async {
-                      await ref.read(deviceAuthStateProvider.notifier).logout();
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Device logged out successfully')),
-                        );
-                      }
+                    onPressed: () {
+                      // TODO: Implement logout
                     },
                     icon: const Icon(Icons.logout),
                     label: const Text('Logout'),
@@ -64,38 +50,10 @@ class LoginScreen extends ConsumerWidget {
               ],
             ),
             loading: () => const CircularProgressIndicator(),
-            error: (error, _) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                const SizedBox(height: 16),
-                Text('Error: ${error.toString()}'),
-                const SizedBox(height: 20),
-                ElevatedButton.icon(
-                  onPressed: () => ref.refresh(deviceAuthStateProvider),
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
-                ),
-              ],
-            ),
+            error: (error, _) => Text('Error: ${error.toString()}'),
           ),
         ),
       ),
     );
-  }
-}
-
-class LayerVisibilityNotifier extends StateNotifier<Map<String, bool>> {
-  LayerVisibilityNotifier() : super({});
-
-  void setLayerVisibility(String layerId, bool isVisible) {
-    state = {
-      ...state,
-      layerId: isVisible,
-    };
-  }
-
-  bool isLayerVisible(String layerId) {
-    return state[layerId] ?? false;
   }
 }

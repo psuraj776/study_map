@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import '../../../../core/providers/providers.dart';
+import '../../../../core/providers/app_providers.dart';
 import '../../../../core/constants/map_constants.dart';
 
 class MapWidget extends ConsumerWidget {
@@ -10,31 +10,35 @@ class MapWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final polygons = ref.watch(statesProvider);
-    final polylines = ref.watch(riversProvider);
-    final layerVisibility = ref.watch(layerVisibilityProvider);
+    final polygons = ref.watch(statePolygonsProvider);
+    //final polylines = ref.watch(riverLinesProvider);
 
     return FlutterMap(
       options: MapOptions(
         initialCenter: MapConstants.indiaCenter,
         initialZoom: MapConstants.defaultZoom,
+        minZoom: MapConstants.minZoom,
+        maxZoom: MapConstants.maxZoom,
       ),
       children: [
-        MBTilesLayer(
-          mbtilesPath: 'assets/basemaps/india_basemap.mbtiles',
+        // Use OpenStreetMap tiles for now (online)
+        // TODO: Replace with MBTiles when package issues are resolved
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'com.example.offline_map_app',
         ),
-        if (layerVisibility['states'] == true)
-          polygons.when(
-            data: (data) => PolygonLayer(polygons: data),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (_, __) => const SizedBox(),
-          ),
-        if (layerVisibility['rivers'] == true)
-          polylines.when(
-            data: (data) => PolylineLayer(polylines: data),
-            loading: () => const SizedBox(),
-            error: (_, __) => const SizedBox(),
-          ),
+        polygons.when(
+          data: (data) => PolygonLayer(polygons: data),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, __) => const SizedBox(),
+        ),
+        /*
+        polylines.when(
+          data: (data) => PolylineLayer(polylines: data),
+          loading: () => const SizedBox(),
+          error: (_, __) => const SizedBox(),
+        ),
+        */
       ],
     );
   }

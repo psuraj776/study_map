@@ -1,4 +1,4 @@
-import 'package:shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OfflineSubscriptionService {
   static const String _subscriptionKey = 'is_premium';
@@ -15,5 +15,9 @@ class OfflineSubscriptionService {
     if (activationCode == 'PREMIUM2025') { // In real app, use more secure validation
       await _prefs.setBool(_subscriptionKey, true);
     }
+  }
+
+  Future<void> deactivatePremium() async {
+    await _prefs.setBool(_subscriptionKey, false);
   }
 }

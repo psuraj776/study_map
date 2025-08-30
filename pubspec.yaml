@@ -11,28 +11,22 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-
-  # Mapping
+  
+  # Core dependencies for offline functionality
   flutter_map: ^8.1.1
-  flutter_map_tile_caching: ^10.1.1
-  latlong2: ^0.9.0
-  flutter_map_mbtiles: ^1.0.4
-
-  # GeoJSON parsing
-  geojson_vi: ^2.0.0
   flutter_riverpod: ^2.5.1
-
-  # Needed by FMTC for its ObjectBox backend
-  objectbox_flutter_libs: any
-
-  in_app_purchase: ^3.1.11
   shared_preferences: ^2.2.2
-
-  # Device & Auth
   device_info_plus: ^9.1.1
-  firebase_core: ^2.24.2
-  firebase_auth: ^4.15.3
-  cloud_firestore: ^4.13.6
+  geojson_vi: ^2.2.5
+  latlong2: ^0.9.0
+  
+  # Remove Firebase packages - they're not needed for offline functionality
+  # cloud_firestore: ^4.13.6
+  # firebase_core: ^2.24.2
+  # firebase_auth: ^4.15.3
+  
+  # Optional: In-app purchase for later
+  in_app_purchase: ^3.1.11
 
 dev_dependencies:
   flutter_test:
@@ -41,8 +35,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/basemaps/india_basemap.mbtiles
     - assets/layers/india_states.geojson
-    - assets/layers/india_rivers.geojson
+    # - assets/layers/india_rivers.geojson

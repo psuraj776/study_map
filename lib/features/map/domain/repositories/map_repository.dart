@@ -3,14 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geojson_vi/geojson_vi.dart';
-import '../../../../core/constants/map_constants.dart';
+import 'package:flutter/material.dart';
 
 class MapRepository {
-  Future<List<Polygon>> loadStatesLayer() async {
+  Future<List<Polygon>> loadStatePolygons() async {
     try {
-      final String geojsonStr = await rootBundle.loadString(
-        MapConstants.layerPaths['states']!
-      );
+      final String geojsonStr = 
+          await rootBundle.loadString('assets/layers/india_states.geojson');
       final geojson = GeoJSONFeatureCollection.fromJSON(jsonDecode(geojsonStr));
       
       final polygons = <Polygon>[];
@@ -20,15 +19,15 @@ class MapRepository {
         if (geom == null || geom is! GeoJSONPolygon) continue;
         
         if (geom.coordinates.isEmpty) continue;
-        final coords = geom.coordinates[0].map(
-          (c) => LatLng(c[1], c[0])
-        ).toList();
+        final coords = geom.coordinates[0]
+            .map((c) => LatLng(c[1], c[0]))
+            .toList();
         
         polygons.add(
           Polygon(
             points: coords,
-            borderColor: MapConstants.layerColors['states']!,
-            color: MapConstants.layerColors['states']!.withOpacity(0.3),
+            borderColor: Colors.blue,
+            color: Colors.blue.withOpacity(0.3),
             borderStrokeWidth: 2,
           ),
         );
@@ -36,40 +35,40 @@ class MapRepository {
       
       return polygons;
     } catch (e) {
-      throw Exception('Failed to load states layer: $e');
+      return [];
     }
   }
-
-  Future<List<Polyline>> loadRiversLayer() async {
+/*
+  Future<List<Polyline>> loadRiverLines() async {
     try {
-      final String geojsonStr = await rootBundle.loadString(
-        MapConstants.layerPaths['rivers']!
-      );
+      final String geojsonStr = 
+          await rootBundle.loadString('assets/layers/india_rivers.geojson');
       final geojson = GeoJSONFeatureCollection.fromJSON(jsonDecode(geojsonStr));
       
-      final polylines = <Polyline>[];
+      final lines = <Polyline>[];
       
       for (final feature in geojson.features) {
         final geom = (feature as GeoJSONFeature?)?.geometry;
         if (geom == null || geom is! GeoJSONLineString) continue;
         
         if (geom.coordinates.isEmpty) continue;
-        final coords = geom.coordinates.map(
-          (c) => LatLng(c[1], c[0])
-        ).toList();
+        final coords = geom.coordinates
+            .map((c) => LatLng(c[1], c[0]))
+            .toList();
         
-        polylines.add(
+        lines.add(
           Polyline(
             points: coords,
             strokeWidth: 2,
-            color: MapConstants.layerColors['rivers']!,
+            color: Colors.blue,
           ),
         );
       }
       
-      return polylines;
+      return lines;
     } catch (e) {
-      throw Exception('Failed to load rivers layer: $e');
+      return [];
     }
   }
+*/
 }
