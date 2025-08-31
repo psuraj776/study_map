@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'dart:math' as math; // Add this line
+import 'dart:math' as math;
 import '../models/map_navigation_state.dart';
 import '../constants/map_constants.dart';
+import '../constants/geographic_data.dart'; // Add this line
 import '../../services/app_logger.dart';
 import '../../features/map/domain/repositories/map_repository.dart';
 

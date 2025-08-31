@@ -37,8 +37,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/basemaps/india_basemap.mbtiles
+    - assets/
+    - assets/basemaps/
     - assets/layers/
-    - assets/layers/rajasthan.geojson
-    - assets/layers/rajasthan_jhalawar.geojson
     # - assets/layers/india_rivers.geojson
