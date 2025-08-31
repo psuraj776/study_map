@@ -7,8 +7,13 @@ class LayerControl extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final polygons = ref.watch(statePolygonsProvider);
+    final logger = ref.read(loggerProvider);
     final isPremium = ref.watch(premiumStatusProvider);
+    final isStateLayerVisible = ref.watch(stateLayerVisibilityProvider);
+    final isRiverLayerVisible = ref.watch(riverLayerVisibilityProvider);
+
+    logger.debug('LayerControl', 'Building layer control panel');
+    logger.debug('LayerControl', 'Premium status: $isPremium, State layer: $isStateLayerVisible, River layer: $isRiverLayerVisible');
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -24,11 +29,30 @@ class LayerControl extends ConsumerWidget {
           CheckboxListTile(
             title: const Text('State Boundaries'),
             subtitle: const Text('Area Layer'),
-            value: true,
+            value: isStateLayerVisible,
             onChanged: (value) {
-              // TODO: Implement layer toggle
+              logger.layerEvent('TOGGLE', 'State Boundaries', value ?? false);
+              
+              // Toggle state layer visibility
+              ref.read(stateLayerVisibilityProvider.notifier).state = value ?? false;
+              
+              logger.info('LayerControl', 'State boundaries ${value == true ? "enabled" : "disabled"}');
+              
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    value == true 
+                        ? 'State boundaries enabled' 
+                        : 'State boundaries disabled',
+                  ),
+                  duration: const Duration(seconds: 1),
+                ),
+              );
             },
-            secondary: const Icon(Icons.crop_square, color: Colors.blue),
+            secondary: Icon(
+              Icons.crop_square, 
+              color: isStateLayerVisible ? Colors.blue : Colors.grey,
+            ),
           ),
           CheckboxListTile(
             title: const Text('Rivers'),
@@ -43,13 +67,34 @@ class LayerControl extends ConsumerWidget {
                   ),
               ],
             ),
-            value: false,
+            value: isRiverLayerVisible,
             onChanged: !isPremium
-                ? null
+                ? (value) {
+                    logger.warning('LayerControl', 'User attempted to toggle rivers without premium');
+                  }
                 : (value) {
-                    // TODO: Implement river layer toggle
+                    logger.layerEvent('TOGGLE', 'Rivers', value ?? false);
+                    
+                    // Toggle river layer visibility
+                    ref.read(riverLayerVisibilityProvider.notifier).state = value ?? false;
+                    
+                    logger.info('LayerControl', 'Rivers ${value == true ? "enabled" : "disabled"} (no data available yet)');
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          value == true 
+                              ? 'Rivers enabled (no data available yet)' 
+                              : 'Rivers disabled',
+                        ),
+                        duration: const Duration(seconds: 1),
+                      ),
+                    );
                   },
-            secondary: const Icon(Icons.timeline, color: Colors.cyan),
+            secondary: Icon(
+              Icons.timeline, 
+              color: isRiverLayerVisible && isPremium ? Colors.cyan : Colors.grey,
+            ),
           ),
           if (!isPremium) ...[
             const Divider(),
@@ -57,7 +102,10 @@ class LayerControl extends ConsumerWidget {
               leading: const Icon(Icons.upgrade, color: Colors.orange),
               title: const Text('Upgrade to Premium'),
               subtitle: const Text('Access all layers and features'),
-              onTap: () => _showUpgradeDialog(context, ref),
+              onTap: () {
+                logger.info('LayerControl', 'User tapped upgrade to premium');
+                _showUpgradeDialog(context, ref);
+              },
             ),
           ],
         ],
@@ -66,6 +114,10 @@ class LayerControl extends ConsumerWidget {
   }
 
   void _showUpgradeDialog(BuildContext context, WidgetRef ref) {
+    final logger = ref.read(loggerProvider);
+    
+    logger.debug('LayerControl', 'Showing upgrade dialog');
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -75,11 +127,15 @@ class LayerControl extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              logger.debug('LayerControl', 'User cancelled upgrade dialog');
+              Navigator.of(context).pop();
+            },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
+              logger.debug('LayerControl', 'User proceeding to activation code entry');
               _showActivationCodeDialog(context, ref);
             },
             child: const Text('Enter Code'),
@@ -90,7 +146,10 @@ class LayerControl extends ConsumerWidget {
   }
 
   void _showActivationCodeDialog(BuildContext context, WidgetRef ref) {
+    final logger = ref.read(loggerProvider);
     final controller = TextEditingController();
+    
+    logger.debug('LayerControl', 'Showing activation code dialog');
     
     showDialog(
       context: context,
@@ -105,13 +164,26 @@ class LayerControl extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              logger.debug('LayerControl', 'User cancelled activation code entry');
+              Navigator.of(context).pop();
+            },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () async {
+              final code = controller.text;
+              logger.info('LayerControl', 'User attempting premium activation with code: $code');
+              
               final subscriptionService = ref.read(subscriptionServiceProvider);
-              await subscriptionService.activatePremium(controller.text);
+              await subscriptionService.activatePremium(code);
+              
+              if (code == 'PREMIUM2025') {
+                logger.info('LayerControl', 'Premium activation successful');
+              } else {
+                logger.warning('LayerControl', 'Premium activation failed - invalid code');
+              }
+              
               if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();

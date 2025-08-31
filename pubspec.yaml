@@ -20,13 +20,12 @@ dependencies:
   geojson_vi: ^2.2.5
   latlong2: ^0.9.0
   
-  # Remove Firebase packages - they're not needed for offline functionality
-  # cloud_firestore: ^4.13.6
-  # firebase_core: ^2.24.2
-  # firebase_auth: ^4.15.3
-  
   # Optional: In-app purchase for later
   in_app_purchase: ^3.1.11
+
+  #log
+  path_provider: ^2.1.1  
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
@@ -39,5 +38,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/basemaps/india_basemap.mbtiles
-    - assets/layers/india_states.geojson
+    - assets/layers/
+    - assets/layers/rajasthan.geojson
+    - assets/layers/rajasthan_jhalawar.geojson
     # - assets/layers/india_rivers.geojson

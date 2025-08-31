@@ -1,0 +1,253 @@
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 85.0.0 (88.0.0 available)
+  analyzer 7.7.1 (8.1.1 available)
+  characters 1.4.0 (1.4.1 available)
+  dart_style 3.1.1 (3.1.2 available)
+  device_info_plus 9.1.2 (11.5.0 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  lints 5.1.1 (6.0.0 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.17.0 available)
+  path_provider_android 2.2.17 (2.2.18 available)
+  source_gen 3.1.0 (4.0.0 available)
+  test_api 0.7.6 (0.7.7 available)
+  unicode 0.3.1 (1.1.8 available)
+  win32_registry 1.1.5 (2.1.0 available)
+Got dependencies!
+14 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Launching lib/main.dart on Chrome in debug mode...
+Waiting for connection from debug service on Chrome...          
+Waiting for connection from debug service on Chrome...             26.9s
+This app is linked to the debug service: ws://127.0.0.1:44541/RGnTuxMTBqQ=/ws
+Debug service listening on ws://127.0.0.1:44541/RGnTuxMTBqQ=/ws
+
+Flutter run key commands.
+r Hot reload. 🔥🔥🔥
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on Chrome is available at: http://127.0.0.1:44541/RGnTuxMTBqQ=
+Starting application from main method in: org-dartlang-app:/web_entrypoint.dart.
+Failed to initialize logger: MissingPluginException(No implementation found for method getApplicationDocumentsDirectory on channel plugins.flutter.io/path_provider)
+2025-08-31T23:32:09.664 [INFO   ] App            : Application starting...
+2025-08-31T23:32:09.670 [INFO   ] App            : SharedPreferences initialized
+2025-08-31T23:32:10.360 [DEBUG  ] Auth           : Checking device auth state...
+2025-08-31T23:32:10.364 [DEBUG  ] DeviceService  : Starting device validation
+2025-08-31T23:32:10.366 [INFO   ] DeviceService  : First time user - registering device
+2025-08-31T23:32:10.367 [DEBUG  ] DeviceService  : Starting device registration
+2025-08-31T23:32:10.372 [DEBUG  ] App            : Loading device auth state...
+2025-08-31T23:32:10.492 [INFO   ] DeviceService  : Device registered successfully
+2025-08-31T23:32:10.492 [INFO   ] AUTH           : DEVICE_REGISTRATION: Device ID: 1756663330369
+Device registered with ID: 1756663330369
+2025-08-31T23:32:10.493 [INFO   ] AUTH           : VALIDATION_RESULT: Device valid: true
+2025-08-31T23:32:10.549 [INFO   ] AUTH           : APP_HOME_RENDER: Device valid: true
+2025-08-31T23:32:10.568 [INFO   ] MapScreen      : Map screen initialized
+2025-08-31T23:32:10.571 [DEBUG  ] MapScreen      : Building map screen
+2025-08-31T23:32:10.632 [DEBUG  ] Navigation     : MapNavigationController initialized
+2025-08-31T23:32:10.642 [DEBUG  ] Polygons       : Loading polygons for level: MapLevel.country, region: india
+2025-08-31T23:32:10.644 [INFO   ] LAYER          : LAYER_VISIBILITY_CHECK: States (visible: false)
+2025-08-31T23:32:10.646 [DEBUG  ] Polygons       : State layer is hidden
+2025-08-31T23:32:10.648 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.country
+2025-08-31T23:32:10.663 [DEBUG  ] MapWidget      : Loading polygons...
+2025-08-31T23:32:10.669 [DEBUG  ] MapWidget      : Building breadcrumb: India
+2025-08-31T23:32:10.679 [DEBUG  ] MapWidget      : Building debug info panel
+[38;5;12m┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+[38;5;12m│ 💡 [1m[3mflutter_map[0m[0m
+[38;5;12m│ 💡 flutter_map wants to help keep map data available for everyone.[0m
+[38;5;12m│ 💡 We use the OpenStreetMap public tile servers in our code examples & demo app,[0m
+[38;5;12m│ 💡 but they are NOT free to use by everyone. Please review whether OSM's tile[0m
+[38;5;12m│ 💡 servers are appropriate and the best choice for your app.[0m
+[38;5;12m│ 💡 See:[0m
+[38;5;12m│ 💡  * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)[0m
+[38;5;12m│ 💡  * https://docs.fleaflet.dev/osm-warn for more information about this warning[0m
+[38;5;12m└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────[0m
+2025-08-31T23:32:11.321 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.country
+2025-08-31T23:32:11.322 [DEBUG  ] MapWidget      : Rendering 0 polygons
+Rendering 0 polygons
+2025-08-31T23:32:11.323 [INFO   ] MapWidget      : Successfully rendered 0 polygons
+2025-08-31T23:32:11.328 [DEBUG  ] MapWidget      : Building breadcrumb: India
+2025-08-31T23:32:11.330 [DEBUG  ] MapWidget      : Building debug info panel
+The Flutter DevTools debugger and profiler on Chrome is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:44541/RGnTuxMTBqQ=
+2025-08-31T23:32:18.223 [DEBUG  ] MapScreen      : User tapped layers button
+2025-08-31T23:32:18.325 [DEBUG  ] MapScreen      : Showing layer control bottom sheet
+2025-08-31T23:32:18.353 [DEBUG  ] SubscriptionService: Premium status check: false
+2025-08-31T23:32:18.355 [DEBUG  ] Subscription   : Premium status: false
+2025-08-31T23:32:18.361 [DEBUG  ] LayerControl   : Building layer control panel
+2025-08-31T23:32:18.363 [DEBUG  ] LayerControl   : Premium status: false, State layer: false, River layer: false
+2025-08-31T23:32:19.909 [INFO   ] LAYER          : TOGGLE: State Boundaries (visible: true)
+2025-08-31T23:32:19.918 [INFO   ] LayerControl   : State boundaries enabled
+2025-08-31T23:32:19.943 [DEBUG  ] Polygons       : Loading polygons for level: MapLevel.country, region: india
+2025-08-31T23:32:19.945 [INFO   ] LAYER          : LAYER_VISIBILITY_CHECK: States (visible: true)
+2025-08-31T23:32:19.950 [DEBUG  ] MapRepository  : Loading state polygons from assets
+2025-08-31T23:32:20.064 [DEBUG  ] LayerControl   : Building layer control panel
+2025-08-31T23:32:20.065 [DEBUG  ] LayerControl   : Premium status: false, State layer: true, River layer: false
+2025-08-31T23:32:20.102 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.country
+2025-08-31T23:32:20.102 [DEBUG  ] MapWidget      : Loading polygons...
+2025-08-31T23:32:20.104 [DEBUG  ] MapWidget      : Building breadcrumb: India
+2025-08-31T23:32:20.105 [DEBUG  ] MapWidget      : Building debug info panel
+2025-08-31T23:32:20.884 [DEBUG  ] MapRepository  : Successfully loaded GeoJSON string, length: 46862414
+2025-08-31T23:32:21.334 [DEBUG  ] MapRepository  : Successfully parsed JSON data
+2025-08-31T23:32:40.772 [DEBUG  ] MapRepository  : Successfully created GeoJSONFeatureCollection with 36 features
+2025-08-31T23:32:40.773 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.794 [DEBUG  ] MapRepository  : Successfully processed feature 1 with 1 polygon(s)
+2025-08-31T23:32:40.795 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.836 [DEBUG  ] MapRepository  : Successfully processed feature 2 with 1 polygon(s)
+2025-08-31T23:32:40.837 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.838 [DEBUG  ] MapRepository  : Successfully processed feature 3 with 1 polygon(s)
+2025-08-31T23:32:40.839 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.890 [DEBUG  ] MapRepository  : Successfully processed feature 4 with 1 polygon(s)
+2025-08-31T23:32:40.890 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.904 [DEBUG  ] MapRepository  : Successfully processed feature 5 with 1 polygon(s)
+2025-08-31T23:32:40.906 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.922 [DEBUG  ] MapRepository  : Successfully processed feature 6 with 1 polygon(s)
+2025-08-31T23:32:40.923 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.944 [DEBUG  ] MapRepository  : Successfully processed feature 7 with 1 polygon(s)
+2025-08-31T23:32:40.945 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.959 [DEBUG  ] MapRepository  : Successfully processed feature 8 with 1 polygon(s)
+2025-08-31T23:32:40.960 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:40.984 [DEBUG  ] MapRepository  : Successfully processed feature 9 with 1 polygon(s)
+2025-08-31T23:32:40.985 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.033 [DEBUG  ] MapRepository  : Successfully processed feature 10 with 1 polygon(s)
+2025-08-31T23:32:41.033 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.038 [DEBUG  ] MapRepository  : Successfully processed feature 11 with 1 polygon(s)
+2025-08-31T23:32:41.038 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.052 [DEBUG  ] MapRepository  : Successfully processed feature 12 with 1 polygon(s)
+2025-08-31T23:32:41.053 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.071 [DEBUG  ] MapRepository  : Successfully processed feature 13 with 1 polygon(s)
+2025-08-31T23:32:41.071 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.093 [DEBUG  ] MapRepository  : Successfully processed feature 14 with 1 polygon(s)
+2025-08-31T23:32:41.093 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.117 [DEBUG  ] MapRepository  : Successfully processed feature 15 with 1 polygon(s)
+2025-08-31T23:32:41.118 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.133 [DEBUG  ] MapRepository  : Successfully processed feature 16 with 1 polygon(s)
+2025-08-31T23:32:41.133 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.250 [DEBUG  ] MapRepository  : Successfully processed feature 17 with 1 polygon(s)
+2025-08-31T23:32:41.251 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 220 polygons
+2025-08-31T23:32:41.350 [DEBUG  ] MapRepository  : Successfully processed feature 18 with 220 polygon(s)
+2025-08-31T23:32:41.351 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 13 polygons
+2025-08-31T23:32:41.438 [DEBUG  ] MapRepository  : Successfully processed feature 19 with 13 polygon(s)
+2025-08-31T23:32:41.438 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 35 polygons
+2025-08-31T23:32:41.440 [DEBUG  ] MapRepository  : Successfully processed feature 20 with 35 polygon(s)
+2025-08-31T23:32:41.441 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.477 [DEBUG  ] MapRepository  : Successfully processed feature 21 with 1 polygon(s)
+2025-08-31T23:32:41.478 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 3 polygons
+2025-08-31T23:32:41.482 [DEBUG  ] MapRepository  : Successfully processed feature 22 with 3 polygon(s)
+2025-08-31T23:32:41.482 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.488 [DEBUG  ] MapRepository  : Successfully processed feature 23 with 1 polygon(s)
+2025-08-31T23:32:41.489 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.528 [DEBUG  ] MapRepository  : Successfully processed feature 24 with 1 polygon(s)
+2025-08-31T23:32:41.529 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.533 [DEBUG  ] MapRepository  : Successfully processed feature 25 with 1 polygon(s)
+2025-08-31T23:32:41.533 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.538 [DEBUG  ] MapRepository  : Successfully processed feature 26 with 1 polygon(s)
+2025-08-31T23:32:41.538 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.567 [DEBUG  ] MapRepository  : Successfully processed feature 27 with 1 polygon(s)
+2025-08-31T23:32:41.568 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.583 [DEBUG  ] MapRepository  : Successfully processed feature 28 with 1 polygon(s)
+2025-08-31T23:32:41.584 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.616 [DEBUG  ] MapRepository  : Successfully processed feature 29 with 1 polygon(s)
+2025-08-31T23:32:41.617 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 68 polygons
+2025-08-31T23:32:41.659 [DEBUG  ] MapRepository  : Successfully processed feature 30 with 68 polygon(s)
+2025-08-31T23:32:41.660 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 3 polygons
+2025-08-31T23:32:41.790 [DEBUG  ] MapRepository  : Successfully processed feature 31 with 3 polygon(s)
+2025-08-31T23:32:41.791 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 127 polygons
+2025-08-31T23:32:41.838 [DEBUG  ] MapRepository  : Successfully processed feature 32 with 127 polygon(s)
+2025-08-31T23:32:41.839 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 13 polygons
+2025-08-31T23:32:41.891 [DEBUG  ] MapRepository  : Successfully processed feature 33 with 13 polygon(s)
+2025-08-31T23:32:41.892 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 25 polygons
+2025-08-31T23:32:41.899 [DEBUG  ] MapRepository  : Successfully processed feature 34 with 25 polygon(s)
+2025-08-31T23:32:41.900 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 3 polygons
+2025-08-31T23:32:41.966 [DEBUG  ] MapRepository  : Successfully processed feature 35 with 3 polygon(s)
+2025-08-31T23:32:41.966 [DEBUG  ] MapRepository  : Processing MultiPolygon geometry with 1 polygons
+2025-08-31T23:32:41.977 [DEBUG  ] MapRepository  : Successfully processed feature 36 with 1 polygon(s)
+2025-08-31T23:32:41.978 [INFO   ] PERFORMANCE    : LOAD_STATE_POLYGONS_SUCCESS completed in 22027ms - {"polygonCount":536,"featureCount":36,"processedFeatures":36}
+2025-08-31T23:32:41.979 [INFO   ] MapRepository  : Successfully loaded 536 state polygons from 36 features
+2025-08-31T23:32:41.979 [INFO   ] PERFORMANCE    : LOAD_STATE_POLYGONS completed in 22037ms - {"count":536,"level":"country"}
+2025-08-31T23:32:41.983 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.country
+2025-08-31T23:32:41.984 [DEBUG  ] MapWidget      : Rendering 536 polygons
+Rendering 536 polygons
+2025-08-31T23:32:41.985 [INFO   ] MapWidget      : Successfully rendered 536 polygons
+2025-08-31T23:32:41.985 [DEBUG  ] MapWidget      : Building breadcrumb: India
+2025-08-31T23:32:41.987 [DEBUG  ] MapWidget      : Building debug info panel
+2025-08-31T23:32:54.170 [DEBUG  ] MapWidget      : Map tap detected at: 27.061073961606347, 74.041025
+2025-08-31T23:32:54.175 [INFO   ] MAP_EVENT      : MAP_TAP: {"latitude":27.061073961606347,"longitude":74.041025,"currentLevel":"country","currentRegion":"India"}
+Map tapped at: 27.061073961606347, 74.041025
+2025-08-31T23:32:54.178 [DEBUG  ] MapWidget      : Processing state detection for country level tap
+2025-08-31T23:32:54.179 [DEBUG  ] MapWidget      : Showing loading indicator for state detection
+2025-08-31T23:32:54.192 [DEBUG  ] MapRepository  : Finding clicked state at: 27.061073961606347, 74.041025
+2025-08-31T23:32:54.193 [DEBUG  ] MapRepository  : Checking 36 features for click detection
+2025-08-31T23:32:54.546 [INFO   ] MAP_EVENT      : STATE_CLICK_DETECTED: {"clickPoint":{"lat":27.061073961606347,"lng":74.041025},"detectedState":"Rajasthan","stateId":"Rajasthan","detectionTimeMs":354}
+2025-08-31T23:32:54.551 [INFO   ] MapWidget      : State detected: Rajasthan
+State detected: Rajasthan
+2025-08-31T23:32:54.552 [INFO   ] MapWidget      : Showing state dialog for: Rajasthan
+2025-08-31T23:32:56.430 [INFO   ] NAVIGATION     : Navigate from India (country) to Rajasthan (state) (level: user_dialog_selection)
+2025-08-31T23:32:56.448 [INFO   ] MapWidget      : User navigated to state: Rajasthan
+2025-08-31T23:33:02.537 [DEBUG  ] Navigation     : Calculated bounds for Rajasthan: center=LatLng(latitude:26.628412, longitude:73.878347), zoom=5, bounds={minLat: 23.058661226962368, maxLat: 30.198163304473766, minLng: 69.48443742981254, maxLng: 78.27225734193712}
+2025-08-31T23:33:02.539 [INFO   ] NAVIGATION     : Navigate from India (country) to Rajasthan (state) (level: state)
+2025-08-31T23:33:02.540 [INFO   ] MAP_EVENT      : NAVIGATE_TO_STATE: {"stateId":"Rajasthan","stateName":"Rajasthan","center":{"lat":26.62841226571807,"lng":73.87834738587483},"zoom":5,"breadcrumb":["India","Rajasthan"],"usedBounds":true}
+2025-08-31T23:33:02.543 [DEBUG  ] Polygons       : Loading polygons for level: MapLevel.state, region: Rajasthan
+2025-08-31T23:33:02.543 [INFO   ] LAYER          : LAYER_VISIBILITY_CHECK: States (visible: true)
+2025-08-31T23:33:02.545 [DEBUG  ] MapRepository  : Attempting to load districts for state: Rajasthan
+2025-08-31T23:33:02.546 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.state
+2025-08-31T23:33:02.547 [DEBUG  ] MapWidget      : Loading polygons...
+2025-08-31T23:33:02.548 [DEBUG  ] MapWidget      : Building breadcrumb: India > Rajasthan
+2025-08-31T23:33:02.550 [DEBUG  ] MapWidget      : Building data indicator for level: MapLevel.state
+2025-08-31T23:33:02.551 [DEBUG  ] MapWidget      : Building debug info panel
+2025-08-31T23:33:02.666 [DEBUG  ] MapWidget      : Animating to new position: LatLng(latitude:26.628412, longitude:73.878347) at zoom 5
+2025-08-31T23:33:02.670 [DEBUG  ] MapRepository  : Successfully loaded state detail GeoJSON for Rajasthan
+2025-08-31T23:33:08.127 [DEBUG  ] MapRepository  : Parsed GeoJSON with 50 features for Rajasthan
+2025-08-31T23:33:08.337 [INFO   ] PERFORMANCE    : LOAD_DISTRICT_POLYGONS completed in 5791ms - {"count":72,"stateId":"Rajasthan","processedFeatures":50}
+2025-08-31T23:33:08.337 [INFO   ] MapRepository  : Loaded 72 district polygons for Rajasthan from 50 features
+2025-08-31T23:33:08.338 [INFO   ] PERFORMANCE    : LOAD_DISTRICT_POLYGONS completed in 5795ms - {"count":72,"stateId":"Rajasthan"}
+2025-08-31T23:33:08.541 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.state
+2025-08-31T23:33:08.542 [DEBUG  ] MapWidget      : Rendering 72 polygons
+Rendering 72 polygons
+2025-08-31T23:33:08.543 [INFO   ] MapWidget      : Successfully rendered 72 polygons
+2025-08-31T23:33:08.544 [DEBUG  ] MapWidget      : Building breadcrumb: India > Rajasthan
+2025-08-31T23:33:08.545 [DEBUG  ] MapWidget      : Building data indicator for level: MapLevel.state
+2025-08-31T23:33:08.546 [DEBUG  ] MapWidget      : Building debug info panel
+2025-08-31T23:33:18.959 [DEBUG  ] MapWidget      : Map tap detected at: 24.384297483108753, 76.28499495088273
+2025-08-31T23:33:18.960 [INFO   ] MAP_EVENT      : MAP_TAP: {"latitude":24.384297483108753,"longitude":76.28499495088273,"currentLevel":"state","currentRegion":"Rajasthan"}
+Map tapped at: 24.384297483108753, 76.28499495088273
+2025-08-31T23:33:18.961 [DEBUG  ] MapWidget      : Processing district detection for state level tap
+2025-08-31T23:33:18.962 [DEBUG  ] MapWidget      : Showing loading indicator for district detection
+2025-08-31T23:33:18.965 [DEBUG  ] MapRepository  : Finding clicked district at: 24.384297483108753, 76.28499495088273 in state: Rajasthan
+2025-08-31T23:33:18.966 [DEBUG  ] MapRepository  : District data not cached for Rajasthan, loading...
+2025-08-31T23:33:18.967 [DEBUG  ] MapRepository  : Successfully loaded district GeoJSON for click detection: Rajasthan
+2025-08-31T23:33:24.156 [DEBUG  ] MapRepository  : Cached district data for click detection: 50 features for Rajasthan
+2025-08-31T23:33:24.157 [DEBUG  ] MapRepository  : Checking 50 district features for click detection
+2025-08-31T23:33:24.292 [INFO   ] MAP_EVENT      : DISTRICT_CLICK_DETECTED: {"clickPoint":{"lat":24.384297483108753,"lng":76.28499495088273},"detectedDistrict":"JHALAWAR","districtId":"JHALAWAR","stateId":"Rajasthan","detectionTimeMs":5326}
+2025-08-31T23:33:24.293 [INFO   ] MapWidget      : District detected: JHALAWAR
+District detected: JHALAWAR
+2025-08-31T23:33:24.295 [INFO   ] MapWidget      : Showing district dialog for: JHALAWAR
+2025-08-31T23:33:31.476 [INFO   ] NAVIGATION     : Navigate from Rajasthan (state) to JHALAWAR (district) (level: user_dialog_selection)
+2025-08-31T23:33:31.484 [INFO   ] MapWidget      : User navigated to district: JHALAWAR
+2025-08-31T23:33:32.810 [DEBUG  ] Navigation     : Calculated bounds for rajasthan_jhalawar: center=LatLng(latitude:24.313311, longitude:76.203369), zoom=8.5, bounds={minLat: 23.755939339446144, maxLat: 24.87068328901178, minLng: 75.45933903044273, maxLng: 76.94739874385837}
+2025-08-31T23:33:32.812 [INFO   ] NAVIGATION     : Navigate from Rajasthan (state) to JHALAWAR (district) (level: district)
+2025-08-31T23:33:32.813 [INFO   ] MAP_EVENT      : NAVIGATE_TO_DISTRICT: {"districtId":"rajasthan_jhalawar","districtName":"JHALAWAR","center":{"lat":24.31331131422896,"lng":76.20336888715056},"zoom":8.5,"breadcrumb":["India","Rajasthan","JHALAWAR"],"usedBounds":true}
+2025-08-31T23:33:32.815 [DEBUG  ] Polygons       : Loading polygons for level: MapLevel.district, region: rajasthan_jhalawar
+2025-08-31T23:33:32.815 [INFO   ] LAYER          : LAYER_VISIBILITY_CHECK: States (visible: true)
+2025-08-31T23:33:32.817 [DEBUG  ] MapRepository  : Attempting to load taluks for district: rajasthan_jhalawar
+2025-08-31T23:33:32.819 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.district
+2025-08-31T23:33:32.820 [DEBUG  ] MapWidget      : Loading polygons...
+2025-08-31T23:33:32.820 [DEBUG  ] MapWidget      : Building breadcrumb: India > Rajasthan > JHALAWAR
+2025-08-31T23:33:32.821 [DEBUG  ] MapWidget      : Building data indicator for level: MapLevel.district
+2025-08-31T23:33:32.822 [DEBUG  ] MapWidget      : Building debug info panel
+2025-08-31T23:33:32.906 [DEBUG  ] MapWidget      : Animating to new position: LatLng(latitude:24.313311, longitude:76.203369) at zoom 8.5
+2025-08-31T23:33:32.908 [DEBUG  ] MapRepository  : Successfully loaded district detail GeoJSON for rajasthan_jhalawar
+2025-08-31T23:33:33.222 [DEBUG  ] MapRepository  : Parsed GeoJSON with 1 features for rajasthan_jhalawar
+2025-08-31T23:33:33.243 [INFO   ] PERFORMANCE    : LOAD_TALUK_POLYGONS completed in 426ms - {"count":1,"districtId":"rajasthan_jhalawar","processedFeatures":1}
+2025-08-31T23:33:33.244 [INFO   ] MapRepository  : Loaded 1 taluk polygons for rajasthan_jhalawar from 1 features
+2025-08-31T23:33:33.244 [INFO   ] PERFORMANCE    : LOAD_TALUK_POLYGONS completed in 430ms - {"count":1,"districtId":"rajasthan_jhalawar"}
+2025-08-31T23:33:33.406 [DEBUG  ] MapWidget      : Building map widget for level: MapLevel.district
+2025-08-31T23:33:33.409 [DEBUG  ] MapWidget      : Rendering 1 polygons
+Rendering 1 polygons
+2025-08-31T23:33:33.410 [INFO   ] MapWidget      : Successfully rendered 1 polygons
+2025-08-31T23:33:33.411 [DEBUG  ] MapWidget      : Building breadcrumb: India > Rajasthan > JHALAWAR
+2025-08-31T23:33:33.412 [DEBUG  ] MapWidget      : Building data indicator for level: MapLevel.district
+2025-08-31T23:33:33.413 [DEBUG  ] MapWidget      : Building debug info panel
