@@ -33,16 +33,20 @@ class LoginScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 if (!isValidDevice)
                   ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: Implement device authorization
+                    onPressed: () async {
+                      final deviceService = ref.read(deviceServiceProvider);
+                      await deviceService.registerDevice();
+                      ref.invalidate(deviceAuthStateProvider);
                     },
                     icon: const Icon(Icons.login),
                     label: const Text('Authorize This Device'),
                   ),
                 if (isValidDevice)
                   ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: Implement logout
+                    onPressed: () async {
+                      final deviceService = ref.read(deviceServiceProvider);
+                      await deviceService.logout();
+                      ref.invalidate(deviceAuthStateProvider);
                     },
                     icon: const Icon(Icons.logout),
                     label: const Text('Logout'),

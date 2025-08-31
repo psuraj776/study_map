@@ -9,7 +9,7 @@ class MapConstants {
   
   static const Map<String, String> layerPaths = {
     'states': 'assets/layers/india_states.geojson',
-    'rivers': 'assets/layers/india_rivers.geojson',
+    //'rivers': 'assets/layers/india_rivers.geojson',
   };
 
   static const Map<String, Color> layerColors = {

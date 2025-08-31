@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum LayerType { polygon, polyline }
+enum LayerType { polygon, polyline, point }
 enum LayerTier { free, premium }
 
 class MapLayer {

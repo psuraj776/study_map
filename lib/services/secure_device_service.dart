@@ -1,36 +1,50 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 class SecureDeviceService {
-  static const String _deviceKey = 'active_device';
+  static const String _deviceIdKey = 'active_device';
   final SharedPreferences _prefs;
-  final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   SecureDeviceService(this._prefs);
 
-  Future<String> _getDeviceId() async {
-    final deviceInfo = await _deviceInfo.androidInfo;
-    return deviceInfo.id;
-  }
-
   Future<bool> validateDevice() async {
-    final deviceId = await _getDeviceId();
-    final storedDevice = _prefs.getString(_deviceKey);
-    
-    if (storedDevice == null) {
-      await _prefs.setString(_deviceKey, deviceId);
-      return true;
+    try {
+      final storedDeviceId = _prefs.getString(_deviceIdKey);
+      
+      if (storedDeviceId == null) {
+        // First time user - register device
+        await registerDevice();
+        return true;
+      }
+      
+      // For this demo, always return true if device ID exists
+      // In real app, you'd validate against server
+      return storedDeviceId.isNotEmpty;
+    } catch (e) {
+      print('Error validating device: $e');
+      // Return false on error instead of throwing
+      return false;
     }
-
-    return storedDevice == deviceId;
   }
 
   Future<void> registerDevice() async {
-    final deviceId = await _getDeviceId();
-    await _prefs.setString(_deviceKey, deviceId);
+    try {
+      // Generate a simple device ID for demo
+      final deviceId = DateTime.now().millisecondsSinceEpoch.toString();
+      await _prefs.setString(_deviceIdKey, deviceId);
+      print('Device registered with ID: $deviceId');
+    } catch (e) {
+      print('Error registering device: $e');
+      rethrow;
+    }
   }
 
   Future<void> logout() async {
-    await _prefs.remove(_deviceKey);
+    try {
+      await _prefs.remove(_deviceIdKey);
+      print('Device logged out');
+    } catch (e) {
+      print('Error during logout: $e');
+      rethrow;
+    }
   }
 }
