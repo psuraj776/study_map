@@ -6,6 +6,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.9.0
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -14,6 +15,8 @@ dependencies:
   
   # Core dependencies for offline functionality
   flutter_map: ^8.1.1
+  flutter_map_mbtiles: ^1.0.4
+  mbtiles: ^0.4.0
   flutter_riverpod: ^2.5.1
   shared_preferences: ^2.2.2
   device_info_plus: ^9.1.1
@@ -38,6 +41,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/basemaps/
+    - assets/mbtiles/
+    - assets/offline_data/
     - assets/layers/
     # - assets/layers/india_rivers.geojson

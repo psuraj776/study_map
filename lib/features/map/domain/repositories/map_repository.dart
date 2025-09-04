@@ -9,51 +9,98 @@ import '../../../../services/app_logger.dart';
 import '../../../../core/constants/geographic_data.dart';
 
 class MapRepository {
-  final AppLogger logger;
+  final AppLogger _logger;
   
   // Cache for loaded GeoJSON data
   GeoJSONFeatureCollection? _stateGeoData;
   final Map<String, List<Polygon>> _polygonCache = {};
+  final Map<String, List<Polyline>> _polylineCache = {};
 
-  MapRepository(this.logger);
+  MapRepository(this._logger);
 
-  /// Load state polygons - simplified approach
+  /// Load country boundaries (India) - Use existing india-composite.geojson
+  Future<List<Polygon>> loadCountryPolygons() async {
+    try {
+      _logger.debug('MapRepository', 'Loading country boundaries from india_states.geojson');
+
+      // Load your existing india_states.geojson file
+      final jsonString = await rootBundle.loadString('assets/layers/india_states.geojson');
+      final geojson = jsonDecode(jsonString);
+      
+      return _parsePolygonsFromGeoJSON(
+        geojson, 
+        Colors.transparent, // Transparent fill so we only see the border
+        Colors.blue, // Blue border for India outline
+        strokeWidth: 3.0, // Thick border to make i t visible
+      );
+    } catch (e) {
+      _logger.error('MapRepository', 'Error loading india-composite.geojson: $e');
+      
+      // Fallback: Create a simple India outline if file fails to load
+      final indiaOutline = Polygon(
+        points: [
+          const LatLng(37.0, 68.0), // Northwest Kashmir
+          const LatLng(37.0, 97.0), // Northeast Arunachal
+          const LatLng(6.0, 97.0),  // Southeast 
+          const LatLng(6.0, 68.0),  // Southwest
+          const LatLng(37.0, 68.0), // Close the polygon
+        ],
+        color: Colors.transparent,
+        borderColor: Colors.blue,
+        borderStrokeWidth: 3.0,
+        label: 'India',
+      );
+      
+      _logger.info('MapRepository', 'Using fallback India outline polygon');
+      return [indiaOutline];
+    }
+  }
+
+  /// Load state polygons - Use your existing india-composite.geojson
   Future<List<Polygon>> loadStatePolygons() async {
     const cacheKey = 'country_states';
     
     // Return from cache if available
     if (_polygonCache.containsKey(cacheKey)) {
-      logger.debug('MapRepository', 'Returning cached state polygons');
+      _logger.debug('MapRepository', 'Returning cached state polygons');
       return _polygonCache[cacheKey]!;
     }
 
     final stopwatch = Stopwatch()..start();
     
     try {
-      // Try to load from assets, fallback to simplified boundaries
       List<Polygon> polygons;
       
       try {
+        // Try to load from separate india_states.geojson first
         final geojsonStr = await rootBundle.loadString('assets/layers/india_states.geojson');
-        polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.blue);
-        logger.debug('MapRepository', 'Loaded state polygons from GeoJSON');
+        polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.green);
+        _logger.debug('MapRepository', 'Loaded state polygons from india_states.geojson');
       } catch (e) {
-        // Fallback: Create simplified boundaries from constants
-        polygons = _createSimplifiedStatePolygons();
-        logger.debug('MapRepository', 'Created simplified state polygons from constants');
+        // If india_states.geojson doesn't exist, try india-composite.geojson
+        _logger.warning('MapRepository', 'india_states.geojson not found, trying india-composite.geojson');
+        try {
+          final geojsonStr = await rootBundle.loadString('assets/layers/india-composite.geojson');
+          polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.green);
+          _logger.debug('MapRepository', 'Loaded state polygons from india-composite.geojson');
+        } catch (e2) {
+          // Final fallback: Create simplified boundaries from constants
+          polygons = _createSimplifiedStatePolygons();
+          _logger.debug('MapRepository', 'Created simplified state polygons from constants');
+        }
       }
 
       // Cache the result
       _polygonCache[cacheKey] = polygons;
       
-      logger.performance('LOAD_STATE_POLYGONS_SUCCESS', stopwatch.elapsedMilliseconds, {
+      _logger.performance('LOAD_STATE_POLYGONS_SUCCESS', stopwatch.elapsedMilliseconds, {
         'polygonCount': polygons.length,
         'usedFallback': polygons.isEmpty,
       });
       
       return polygons;
     } catch (e, stackTrace) {
-      logger.error('MapRepository', 'Error loading state polygons: $e', stackTrace);
+      _logger.error('MapRepository', 'Error loading state polygons: $e', stackTrace);
       return [];
     } finally {
       stopwatch.stop();
@@ -66,7 +113,7 @@ class MapRepository {
     
     // Return from cache if available
     if (_polygonCache.containsKey(cacheKey)) {
-      logger.debug('MapRepository', 'Returning cached district polygons for $stateId');
+      _logger.debug('MapRepository', 'Returning cached district polygons for $stateId');
       return _polygonCache[cacheKey]!;
     }
 
@@ -75,7 +122,7 @@ class MapRepository {
     try {
       final stateInfo = GeographicData.states[stateId];
       if (stateInfo == null || !stateInfo.hasOfflineData) {
-        logger.warning('MapRepository', 'No offline data available for state: $stateId');
+        _logger.warning('MapRepository', 'No offline data available for state: $stateId');
         return [];
       }
 
@@ -84,14 +131,14 @@ class MapRepository {
       try {
         final geojsonStr = await rootBundle.loadString('assets/offline_data/${stateId}.geojson');
         polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.orange);
-        logger.debug('MapRepository', 'Loaded district polygons from GeoJSON for $stateId');
+        _logger.debug('MapRepository', 'Loaded district polygons from GeoJSON for $stateId');
       } catch (e) {
-        logger.warning('MapRepository', 'District GeoJSON not found for $stateId, trying fallback');
+        _logger.warning('MapRepository', 'District GeoJSON not found for $stateId, trying fallback');
         try {
           final geojsonStr = await rootBundle.loadString('assets/layers/${stateId}.geojson');
           polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.orange);
         } catch (e2) {
-          logger.warning('MapRepository', 'No district data available for state: $stateId');
+          _logger.warning('MapRepository', 'No district data available for state: $stateId');
           return [];
         }
       }
@@ -99,14 +146,14 @@ class MapRepository {
       // Cache the result
       _polygonCache[cacheKey] = polygons;
       
-      logger.performance('LOAD_DISTRICT_POLYGONS', stopwatch.elapsedMilliseconds, {
+      _logger.performance('LOAD_DISTRICT_POLYGONS', stopwatch.elapsedMilliseconds, {
         'count': polygons.length,
         'stateId': stateId,
       });
       
       return polygons;
     } catch (e, stackTrace) {
-      logger.warning('MapRepository', 'Error loading district polygons for $stateId: $e');
+      _logger.warning('MapRepository', 'Error loading district polygons for $stateId: $e');
       return [];
     } finally {
       stopwatch.stop();
@@ -119,7 +166,7 @@ class MapRepository {
     
     // Return from cache if available
     if (_polygonCache.containsKey(cacheKey)) {
-      logger.debug('MapRepository', 'Returning cached taluk polygons for $districtId');
+      _logger.debug('MapRepository', 'Returning cached taluk polygons for $districtId');
       return _polygonCache[cacheKey]!;
     }
 
@@ -128,7 +175,7 @@ class MapRepository {
     try {
       final districtInfo = GeographicData.districts[districtId];
       if (districtInfo == null || !districtInfo.hasOfflineData) {
-        logger.warning('MapRepository', 'No offline data available for district: $districtId');
+        _logger.warning('MapRepository', 'No offline data available for district: $districtId');
         return [];
       }
 
@@ -137,14 +184,14 @@ class MapRepository {
       try {
         final geojsonStr = await rootBundle.loadString('assets/offline_data/${districtId}.geojson');
         polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.green);
-        logger.debug('MapRepository', 'Loaded taluk polygons from GeoJSON for $districtId');
+        _logger.debug('MapRepository', 'Loaded taluk polygons from GeoJSON for $districtId');
       } catch (e) {
-        logger.warning('MapRepository', 'Taluk GeoJSON not found for $districtId, trying fallback');
+        _logger.warning('MapRepository', 'Taluk GeoJSON not found for $districtId, trying fallback');
         try {
           final geojsonStr = await rootBundle.loadString('assets/layers/${districtId}.geojson');
           polygons = _parseGeoJsonToPolygons(geojsonStr, Colors.green);
         } catch (e2) {
-          logger.warning('MapRepository', 'No taluk data available for district: $districtId');
+          _logger.warning('MapRepository', 'No taluk data available for district: $districtId');
           return [];
         }
       }
@@ -152,17 +199,77 @@ class MapRepository {
       // Cache the result
       _polygonCache[cacheKey] = polygons;
       
-      logger.performance('LOAD_TALUK_POLYGONS', stopwatch.elapsedMilliseconds, {
+      _logger.performance('LOAD_TALUK_POLYGONS', stopwatch.elapsedMilliseconds, {
         'count': polygons.length,
         'districtId': districtId,
       });
       
       return polygons;
     } catch (e, stackTrace) {
-      logger.warning('MapRepository', 'Error loading taluk polygons for $districtId: $e');
+      _logger.warning('MapRepository', 'Error loading taluk polygons for $districtId: $e');
       return [];
     } finally {
       stopwatch.stop();
+    }
+  }
+
+  /// Load river lines for a specific state
+  Future<List<Polyline>> loadRiverLines(String stateId) async {
+    final cacheKey = 'rivers_$stateId';
+    
+    // Return from cache if available
+    if (_polylineCache.containsKey(cacheKey)) {
+      _logger.debug('MapRepository', 'Returning cached river lines for $stateId');
+      return _polylineCache[cacheKey]!;
+    }
+
+    try {
+      _logger.debug('MapRepository', 'Loading river lines for state: $stateId');
+      
+      // Try to load state-specific river data
+      final jsonString = await rootBundle.loadString('assets/layers/${stateId}_rivers.geojson');
+      final geojson = jsonDecode(jsonString);
+      
+      final List<Polyline> polylines = [];
+      
+      if (geojson['features'] != null) {
+        for (final feature in geojson['features']) {
+          if (feature['geometry']['type'] == 'LineString') {
+            final coordinates = feature['geometry']['coordinates'] as List;
+            final points = coordinates.map((coord) => 
+              LatLng(coord[1].toDouble(), coord[0].toDouble())
+            ).toList();
+            
+            polylines.add(Polyline(
+              points: points,
+              strokeWidth: 2.0,
+              color: Colors.cyan,
+            ));
+          } else if (feature['geometry']['type'] == 'MultiLineString') {
+            final coordinatesArray = feature['geometry']['coordinates'] as List;
+            for (final coordinates in coordinatesArray) {
+              final points = coordinates.map((coord) => 
+                LatLng(coord[1].toDouble(), coord[0].toDouble())
+              ).toList();
+              
+              polylines.add(Polyline(
+                points: points,
+                strokeWidth: 2.0,
+                color: Colors.cyan,
+              ));
+            }
+          }
+        }
+      }
+      
+      // Cache the result
+      _polylineCache[cacheKey] = polylines;
+      
+      _logger.info('MapRepository', 'Loaded ${polylines.length} river polylines for $stateId');
+      return polylines;
+    } catch (e) {
+      _logger.warning('MapRepository', 'No river data found for $stateId: $e');
+      return [];
     }
   }
 
@@ -180,18 +287,19 @@ class MapRepository {
           LatLng(bounds['minLat']!, bounds['maxLng']!),
           LatLng(bounds['minLat']!, bounds['minLng']!),
         ],
-        borderColor: Colors.blue.withOpacity(0.7),
-        color: Colors.blue.withOpacity(0.1),
+        borderColor: Colors.green.withOpacity(0.7),
+        color: Colors.green.withOpacity(0.1),
         borderStrokeWidth: 1.0,
+        label: state.name,
       );
       polygons.add(polygon);
     }
     
-    logger.debug('MapRepository', 'Created ${polygons.length} simplified state polygons');
+    _logger.debug('MapRepository', 'Created ${polygons.length} simplified state polygons');
     return polygons;
   }
 
-  /// Generic GeoJSON parser
+  /// Generic GeoJSON parser using geojson_vi
   List<Polygon> _parseGeoJsonToPolygons(String geojsonStr, Color color) {
     try {
       final geojson = GeoJSONFeatureCollection.fromJSON(geojsonStr);
@@ -216,12 +324,17 @@ class MapRepository {
         }
 
         for (final coords in allPolygonCoords) {
+          final properties = feature.properties ?? {};
           polygons.add(
             Polygon(
               points: coords,
               borderColor: color.withOpacity(0.8),
-              color: color.withOpacity(0.3),
+              color: color.withOpacity(0.2),
               borderStrokeWidth: 1.5,
+              label: properties['name']?.toString() ?? 
+                     properties['NAME']?.toString() ?? 
+                     properties['st_nm']?.toString() ?? 
+                     properties['ST_NM']?.toString(),
             ),
           );
         }
@@ -229,9 +342,66 @@ class MapRepository {
 
       return polygons;
     } catch (e) {
-      logger.error('MapRepository', 'Error parsing GeoJSON: $e');
+      _logger.error('MapRepository', 'Error parsing GeoJSON: $e');
       return [];
     }
+  }
+
+  /// Helper method to parse polygons with custom styling
+  List<Polygon> _parsePolygonsFromGeoJSON(
+    Map<String, dynamic> geojson, 
+    Color fillColor, 
+    Color borderColor, {
+    double strokeWidth = 1.0,
+  }) {
+    final List<Polygon> polygons = [];
+    
+    if (geojson['features'] != null) {
+      for (final feature in geojson['features']) {
+        final geometry = feature['geometry'];
+        final properties = feature['properties'] ?? {};
+        
+        if (geometry['type'] == 'Polygon') {
+          final coordinates = geometry['coordinates'][0] as List;
+          final points = coordinates.map((coord) => 
+            LatLng(coord[1].toDouble(), coord[0].toDouble())
+          ).toList();
+          
+          polygons.add(Polygon(
+            points: points,
+            color: fillColor,
+            borderColor: borderColor,
+            borderStrokeWidth: strokeWidth,
+            label: properties['name']?.toString() ?? 
+                   properties['NAME']?.toString() ?? 
+                   properties['st_nm']?.toString() ?? 
+                   properties['ST_NM']?.toString(),
+          ));
+        } else if (geometry['type'] == 'MultiPolygon') {
+          final coordinatesArray = geometry['coordinates'] as List;
+          for (final polygonCoords in coordinatesArray) {
+            final coordinates = polygonCoords[0] as List;
+            final points = coordinates.map((coord) => 
+              LatLng(coord[1].toDouble(), coord[0].toDouble())
+            ).toList();
+            
+            polygons.add(Polygon(
+              points: points,
+              color: fillColor,
+              borderColor: borderColor,
+              borderStrokeWidth: strokeWidth,
+              label: properties['name']?.toString() ?? 
+                     properties['NAME']?.toString() ?? 
+                     properties['st_nm']?.toString() ?? 
+                     properties['ST_NM']?.toString(),
+            ));
+          }
+        }
+      }
+    }
+    
+    _logger.info('MapRepository', 'Parsed ${polygons.length} polygons from GeoJSON');
+    return polygons;
   }
 
   List<LatLng> _convertCoordinatesToLatLng(List<dynamic> coordinates) {
@@ -246,7 +416,7 @@ class MapRepository {
     final stopwatch = Stopwatch()..start();
     
     try {
-      logger.debug('MapRepository', 'Finding clicked state at: ${clickPoint.latitude}, ${clickPoint.longitude}');
+      _logger.debug('MapRepository', 'Finding clicked state at: ${clickPoint.latitude}, ${clickPoint.longitude}');
       
       // First try bounds-based detection (fast)
       for (final state in GeographicData.states.values) {
@@ -264,7 +434,7 @@ class MapRepository {
             'properties': {'bounds': bounds},
           };
           
-          logger.mapEvent('STATE_CLICK_DETECTED', {
+          _logger.mapEvent('STATE_CLICK_DETECTED', {
             'clickPoint': {'lat': clickPoint.latitude, 'lng': clickPoint.longitude},
             'detectedState': state.name,
             'stateId': state.id,
@@ -276,10 +446,10 @@ class MapRepository {
         }
       }
       
-      logger.debug('MapRepository', 'No state found for click point (${stopwatch.elapsedMilliseconds}ms)');
+      _logger.debug('MapRepository', 'No state found for click point (${stopwatch.elapsedMilliseconds}ms)');
       return null;
     } catch (e, stackTrace) {
-      logger.error('MapRepository', 'Error finding clicked state: $e', stackTrace);
+      _logger.error('MapRepository', 'Error finding clicked state: $e', stackTrace);
       return null;
     } finally {
       stopwatch.stop();
@@ -291,7 +461,7 @@ class MapRepository {
     final stopwatch = Stopwatch()..start();
     
     try {
-      logger.debug('MapRepository', 'Finding clicked district at: ${clickPoint.latitude}, ${clickPoint.longitude} in state: $stateId');
+      _logger.debug('MapRepository', 'Finding clicked district at: ${clickPoint.latitude}, ${clickPoint.longitude} in state: $stateId');
       
       // Get districts for the current state
       final districts = GeographicData.getDistrictsForState(stateId);
@@ -312,7 +482,7 @@ class MapRepository {
             'properties': {'bounds': bounds},
           };
           
-          logger.mapEvent('DISTRICT_CLICK_DETECTED', {
+          _logger.mapEvent('DISTRICT_CLICK_DETECTED', {
             'clickPoint': {'lat': clickPoint.latitude, 'lng': clickPoint.longitude},
             'detectedDistrict': district.name,
             'districtId': district.id,
@@ -325,10 +495,10 @@ class MapRepository {
         }
       }
       
-      logger.debug('MapRepository', 'No district found for click point (${stopwatch.elapsedMilliseconds}ms)');
+      _logger.debug('MapRepository', 'No district found for click point (${stopwatch.elapsedMilliseconds}ms)');
       return null;
     } catch (e, stackTrace) {
-      logger.error('MapRepository', 'Error finding clicked district: $e', stackTrace);
+      _logger.error('MapRepository', 'Error finding clicked district: $e', stackTrace);
       return null;
     } finally {
       stopwatch.stop();
@@ -350,17 +520,13 @@ class MapRepository {
   /// Clear cache to free memory
   void clearCache() {
     _polygonCache.clear();
-    logger.debug('MapRepository', 'Polygon cache cleared');
+    _polylineCache.clear();
+    _logger.debug('MapRepository', 'Polygon and polyline cache cleared');
   }
 
-  // Placeholder methods for future features
+  /// Placeholder for future POI loading
   Future<List<Marker>> loadPOIsForRegion(String regionId, String regionType) async {
-    logger.debug('MapRepository', 'POI loading not implemented yet for $regionType: $regionId');
-    return [];
-  }
-
-  Future<List<Polyline>> loadRiverLines() async {
-    logger.debug('MapRepository', 'River loading not implemented yet');
+    _logger.debug('MapRepository', 'POI loading not implemented yet for $regionType: $regionId');
     return [];
   }
 }

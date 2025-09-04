@@ -73,7 +73,7 @@ class LoginScreen extends ConsumerWidget {
               return const CircularProgressIndicator();
             },
             error: (error, stackTrace) {
-              logger.error('LoginScreen', 'Error in device auth', error, stackTrace);
+              logger.error('LoginScreen', 'Error in device auth: $error', stackTrace);
               return Text('Error: ${error.toString()}');
             },
           ),
