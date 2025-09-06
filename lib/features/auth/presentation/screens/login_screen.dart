@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/app_providers.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -9,11 +10,12 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final logger = ref.read(loggerProvider);
     final deviceAuth = ref.watch(deviceAuthStateProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     logger.debug('LoginScreen', 'Building login screen');
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Device Authorization')),
+      appBar: AppBar(title: Text(l10n.deviceAuthorization)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -32,8 +34,8 @@ class LoginScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
                   Text(
                     isValidDevice 
-                        ? 'Device Authorized'
-                        : 'Device Not Authorized',
+                        ? l10n.deviceAuthorized
+                        : l10n.deviceNotAuthorized,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 20),
@@ -49,7 +51,7 @@ class LoginScreen extends ConsumerWidget {
                         logger.info('LoginScreen', 'Device registration completed');
                       },
                       icon: const Icon(Icons.login),
-                      label: const Text('Authorize This Device'),
+                      label: Text(l10n.authorizeThisDevice),
                     ),
                   if (isValidDevice)
                     ElevatedButton.icon(
@@ -63,18 +65,25 @@ class LoginScreen extends ConsumerWidget {
                         logger.info('LoginScreen', 'User logout completed');
                       },
                       icon: const Icon(Icons.logout),
-                      label: const Text('Logout'),
+                      label: Text(l10n.logout),
                     ),
                 ],
               );
             },
             loading: () {
               logger.debug('LoginScreen', 'Loading device auth state');
-              return const CircularProgressIndicator();
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(l10n.loading),
+                ],
+              );
             },
             error: (error, stackTrace) {
               logger.error('LoginScreen', 'Error in device auth: $error', stackTrace);
-              return Text('Error: ${error.toString()}');
+              return Text('${l10n.error}: ${error.toString()}');
             },
           ),
         ),

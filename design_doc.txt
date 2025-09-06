@@ -172,3 +172,103 @@ Troubleshooting Common Issues:
 User's purchase is not recognized: Instruct the user to ensure they are logged into the same store account they used to make the purchase. Guide them to use the "Restore Purchases" button, which forces the app to re-query the app store for their active subscriptions.
 
 "Product not found" error: This typically means there is a mismatch between the product ID in the code and the one set up in the Google Play Console / App Store Connect, or the product has not been approved for sale yet.
+
+
+
+📁 Directory Structure Explanation
+Let me explain the purpose and contents of each directory in your Flutter offline map app:
+
+🏗️ Root Level
+main.dart
+Purpose: Entry point of the Flutter application
+Contains:
+main() function that starts the app
+ProviderScope for Riverpod state management
+Root MaterialApp widget configuration
+🧠 core/ - Application Foundation
+The core directory contains shared functionality used throughout the app.
+
+constants/ - Static Data & Configuration
+
+// What it contains:dev_config.dart         // Development settings and feature flagsgeographic_data.dart    // Static geographic data (states, districts, bounds)map_constants.dart      // Map-related constants (zoom levels, centers)
+Purpose: Centralized configuration and static data
+Examples: Default zoom levels, India's geographic boundaries, dev mode settings
+controllers/ - Business Logic Controllers
+
+// What it contains:map_navigation_controller.dart  // Handles map navigation state changes
+Purpose: Contains Riverpod StateNotifiers that manage app state
+Responsibilities: State transitions, business logic, API calls coordination
+models/ - Data Models
+
+// What it contains:layer_models.dart           // Layer configuration data modelsmap_navigation_state.dart   // Map navigation state model
+Purpose: Define data structures used throughout the app
+Contains: Classes, enums, and data transfer objects
+providers/ - State Management
+
+// What it contains:app_providers.dart      // Global app-wide providerslayer_providers.dart    // Layer-specific state providers
+Purpose: Riverpod providers for dependency injection and state management
+Contains: Provider definitions that connect services to UI
+utils/ - Utility Functions
+
+// What it contains:asset_utils.dart         // Asset path helperspolygon_extensions.dart  // Polygon manipulation utilities
+Purpose: Reusable helper functions and extensions
+Contains: Pure functions, extensions, and utility classes
+🎯 features/ - Feature-Based Architecture
+Each feature is self-contained with its own presentation, domain, and data layers.
+
+auth/ - Authentication Feature
+
+auth/├── presentation/│   └── screens/│       └── login_screen.dart  // Device authorization UI
+Purpose: Handles device authentication and authorization
+Contains: Login screens, auth widgets, auth-related UI logic
+map/ - Map Feature (Main Feature)
+
+map/├── domain/│   └── repositories/│       └── map_repository.dart     // Map data access layer└── presentation/    ├── screens/    │   └── map_screen.dart         // Main map screen    └── widgets/        ├── layer_menu_button.dart  // Layer toggle button        ├── layer_menu.dart         // Layer selection menu        └── map_widget.dart         // Core map widget
+domain/repositories/ - Data Access
+Purpose: Abstract data access and business rules
+Contains: Repository interfaces and implementations
+Responsibilities: GeoJSON loading, polygon processing, data caching
+presentation/ - UI Layer
+screens/: Full-screen widgets (pages)
+widgets/: Reusable UI components
+Purpose: User interface and user interaction handling
+⚙️ services/ - External Services
+Contains services that interact with external systems or provide app-wide functionality.
+
+Service Files
+
+app_logger.dart                  // Logging serviceoffline_subscription_service.dart // Subscription managementsecure_device_service.dart       // Device security service
+app_logger.dart
+Purpose: Centralized logging system
+Contains: Debug, info, warning, error logging methods
+Features: Performance tracking, event logging
+offline_subscription_service.dart
+Purpose: Manages user subscriptions and premium features
+Contains: Subscription validation, feature access control
+Features: Premium activation, subscription status checking
+secure_device_service.dart
+Purpose: Device authorization and security
+Contains: Device registration, validation, logout functionality
+Features: Device integrity checks, authorization management
+🏛️ Architecture Pattern: Clean Architecture + Feature-First
+Layer Separation:
+
+📱 Presentation Layer (UI)    ↓🧠 Domain Layer (Business Logic)    ↓💾 Data Layer (Services/Repositories)
+Dependency Flow:
+
+UI Components → Providers → Controllers → Services/Repositories
+Benefits:
+🔒 Separation of Concerns: Each directory has a specific responsibility
+🔄 Reusability: Core utilities and services are shared
+🧪 Testability: Each layer can be tested independently
+📈 Scalability: Easy to add new features without affecting existing code
+🛠️ Maintainability: Clear structure makes debugging and updates easier
+Data Flow Example:
+
+User taps map → map_widget.dart → map_navigation_controller.dart → map_repository.dart → geographic_data.dart
+This structure follows Flutter best practices and makes your app:
+
+Modular: Features are independent
+Scalable: Easy to add new features
+Maintainable: Clear separation of concerns
+Testable: Each part can be tested in isolation

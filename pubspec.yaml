@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:  # Add this
+    sdk: flutter
+  intl: any          # Add this
   cupertino_icons: ^1.0.8
   
   # Core dependencies for offline functionality
@@ -39,6 +42,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true          # Add this
   assets:
     - assets/
     - assets/mbtiles/

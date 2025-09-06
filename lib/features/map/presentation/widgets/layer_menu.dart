@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/layer_providers.dart';
 import '../../../../core/models/layer_models.dart';
 import '../../../../core/constants/dev_config.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LayerMenu extends ConsumerWidget {
   const LayerMenu({super.key});
@@ -50,9 +51,9 @@ class LayerMenu extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Map Layers',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.layers,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -187,45 +188,21 @@ class LayerMenu extends ConsumerWidget {
         ListTile(
           dense: true,
           leading: Icon(
-            _getLayerIcon(layer.id),
-            color: isAccessible 
-                ? (isEnabled ? Colors.green : Colors.grey)
-                : Colors.red,
-            size: 20,
+            layerNotifier.isLayerEffectivelyEnabled(layer.id) 
+                ? Icons.visibility 
+                : Icons.visibility_off,
+            color: layer.isAccessible ? Colors.blue : Colors.grey,
           ),
-          title: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  layer.name,
-                  style: TextStyle(
-                    color: isAccessible ? Colors.black : Colors.grey,
-                    fontWeight: isEnabled ? FontWeight.bold : FontWeight.normal,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              if (layer.isPremium) ...[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: isAccessible ? Colors.amber : Colors.grey,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    DevConfig.isDevelopmentMode ? 'DEV' : 'PRO',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ],
+          title: Text(
+            layer.getName(context), // Use getName method
+            style: TextStyle(
+              color: layer.isAccessible ? Colors.black : Colors.grey,
+              fontWeight: isEnabled ? FontWeight.bold : FontWeight.normal,
+              fontSize: 14,
+            ),
           ),
           subtitle: Text(
-            layer.description,
+            layer.getDescription(context), // Use getDescription method
             style: TextStyle(
               color: isAccessible ? Colors.black54 : Colors.grey,
               fontSize: 11,
@@ -291,7 +268,7 @@ class LayerMenu extends ConsumerWidget {
         children: [
           Expanded(
             child: Text(
-              subLayer.name,
+              subLayer.getName(context), // Use getName method instead of .name
               style: TextStyle(
                 fontSize: 12,
                 color: isAccessible ? Colors.black : Colors.grey,
@@ -350,6 +327,8 @@ class LayerMenu extends ConsumerWidget {
   }
 
   void _showPremiumDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -361,7 +340,7 @@ class LayerMenu extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel), // Use localized text
           ),
           ElevatedButton(
             onPressed: () {
